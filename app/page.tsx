@@ -89,6 +89,7 @@ export default function Home() {
             />
             <DropDown<string>
               options={data_structures_options}
+              value={data_structure.type}
               callback={(value) =>
                 set_data_structure({
                   ...data_structure,
