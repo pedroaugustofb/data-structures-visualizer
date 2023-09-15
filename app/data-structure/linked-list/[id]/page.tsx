@@ -26,9 +26,9 @@ export default function LinkedList({ params, searchParams }: DynamicPageProps) {
 
   return (
     <>
-      <Canvas.Form.Root canvas={canvas}>
+      {/* <Canvas.Form.Root canvas={canvas}>
         <Canvas.Form.SequetialList submit={submit} />
-      </Canvas.Form.Root>
+      </Canvas.Form.Root> */}
     </>
   );
 }

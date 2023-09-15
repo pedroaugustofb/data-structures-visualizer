@@ -13,8 +13,9 @@ export default function SequentialListFormHome({ data, setData }: props) {
         type="number"
         className="w-full"
         label="Tamanho máximo da lista"
+        placeholder="Tamanho máximo da lista"
         value={data.details?.max_size}
-        InputProps={{ inputProps: { min: 0, max: 10 } }}
+        InputProps={{ inputProps: { min: 0 } }}
         onChange={(value) =>
           setData({
             ...data,

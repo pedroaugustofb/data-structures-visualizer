@@ -22,6 +22,9 @@ export default function Home() {
     name: "",
     id: "",
     type: "",
+    details: {
+      max_size: 0,
+    },
   });
 
   const router = useRouter();
@@ -35,7 +38,7 @@ export default function Home() {
   /**
    * Função que valida os campos do formulário e redireciona para a página de visualização da estrutura de dados
    */
-  const handleForm = () => {
+  const handleForm = async () => {
     try {
       if (data_structure.type === "") throw "Selecione uma estrutura de dados";
       if (data_structure.name === "") throw "Digite um nome para a estrutura de dados";
@@ -57,7 +60,7 @@ export default function Home() {
 
       if (type === "sequential-list") url += `&maxSize=${details?.max_size}`;
 
-      router.push(url);
+      await router.push(url);
     } catch (error) {
       toast.error(error as string);
     }
@@ -105,7 +108,13 @@ export default function Home() {
           )}
           {data_structure.type !== "" && (
             <button
-              onClick={() => handleForm()}
+              onClick={() =>
+                toast.promise(async () => await handleForm(), {
+                  error: "Erro ao inicar estrutura.",
+                  pending: "Carregando estrutura...",
+                  success: "Estrutura iniciado com sucesso!",
+                })
+              }
               className="border-gray-700 border mt-3 w-full h-1/2 bg-gray-300 hover:bg-gray-400 ease-in-out duration-300 text-gray-600 font-bold text-2xl rounded-md"
             >
               Visualizar

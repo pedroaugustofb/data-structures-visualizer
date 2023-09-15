@@ -4,33 +4,49 @@ import React from "react";
 import DropDown from "../../inputs/dropdown";
 import { Button, Icon, TextField, Tooltip } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
+import { Fascinate_Inline } from "next/font/google";
 
 export type formdata = {
   operation: string;
-  value?: number;
-  position?: number;
+  value: number | null;
+  position: number | null;
 };
 
 interface SequentialListFormProps {
+  // the callback function to run when button got clicked
   submit: (data: formdata) => void;
+  list_length: number;
 }
 
-export default function SequentialListForm({ submit }: SequentialListFormProps) {
+type option = {
+  value: string;
+  label: string;
+  needs: {
+    value: boolean;
+    position: boolean;
+  };
+};
+
+// Dropdown options
+export const options: option[] = [
+  { value: "push_at_end", label: "Adicionar elemento no fim", needs: { value: true, position: false } },
+  {
+    value: "push_at_index",
+    label: "Adicionar elemento em determinada posição",
+    needs: { value: true, position: true },
+  },
+  { value: "pop_at_end", label: "Remover elemento no fim", needs: { value: false, position: false } },
+  { value: "pop_at_index", label: "Remover elemento em determinada posição", needs: { value: false, position: true } },
+  { value: "search_by_position", label: "Buscar elemento por posição", needs: { value: false, position: true } },
+  { value: "search_by_value", label: "Buscar elemento por valor", needs: { value: true, position: false } },
+];
+
+export default function SequentialListForm({ submit, list_length }: SequentialListFormProps) {
   const [data, setData] = React.useState<formdata>({
     operation: "",
-    value: undefined,
-    position: undefined,
+    value: null,
+    position: list_length,
   });
-
-  // Dropdown options
-  const options = [
-    { value: "push_at_end", label: "Adicionar elemento no fim" },
-    { value: "push_at_index", label: "Adicionar elemento em determinada posição" },
-    { value: "pop_at_end", label: "Remover elemento no fim" },
-    { value: "pop_at_index", label: "Remover elemento em determinada posição" },
-    { value: "search_by_position", label: "Buscar elemento por posição" },
-    { value: "search_by_value", label: "Buscar elemento por valor" },
-  ];
 
   /**
    *
@@ -66,16 +82,29 @@ export default function SequentialListForm({ submit }: SequentialListFormProps) 
       <div className="grid grid-cols-2 grid-rows-1 gap-3 w-6/12">
         <TextField
           className={`${show_value ? "visible" : "invisible absolute"}`}
-          value={data.value}
+          value={data.value !== null && data.value}
+          type="number"
+          placeholder="Valor do elemento"
           label="Valor"
-          onChange={(e) => setData({ ...data, value: parseInt(e.target.value) })}
+          onChange={(e) =>
+            isNaN(parseInt(e.target.value)) === false
+              ? setData({ ...data, value: parseInt(e.target.value) })
+              : setData({ ...data, value: null })
+          }
         />
 
         <TextField
           className={`${show_position ? "visible" : "invisible"}`}
-          value={data.position}
+          value={data.position !== null && data.position}
+          type="number"
+          placeholder="Posição do elemento"
           label="Posição"
-          onChange={(e) => setData({ ...data, position: parseInt(e.target.value) })}
+          InputProps={{ inputProps: { min: 0 } }}
+          onChange={(e) =>
+            isNaN(parseInt(e.target.value)) === false
+              ? setData({ ...data, position: parseInt(e.target.value) })
+              : setData({ ...data, position: null })
+          }
         />
       </div>
 
@@ -88,8 +117,9 @@ export default function SequentialListForm({ submit }: SequentialListFormProps) 
             className={`flex w-full hover:bg-green-400 justify-center items-center rounded ${
               disabled ? "bg-gray-700 text-white" : "bg-green-500 text-black"
             }`}
+            onClick={() => submit(data)}
           >
-            <Icon className="hover:cursor-pointer flex items-center" onClick={() => submit(data)}>
+            <Icon className="hover:cursor-pointer flex items-center">
               <SendIcon />
             </Icon>
           </Button>
