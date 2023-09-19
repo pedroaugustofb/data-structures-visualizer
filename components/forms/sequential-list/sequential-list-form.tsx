@@ -4,7 +4,6 @@ import React from "react";
 import DropDown from "../../inputs/dropdown";
 import { Button, Icon, TextField, Tooltip } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import { Fascinate_Inline } from "next/font/google";
 
 export type formdata = {
   operation: string;
@@ -15,7 +14,8 @@ export type formdata = {
 interface SequentialListFormProps {
   // the callback function to run when button got clicked
   submit: (data: formdata) => void;
-  list_length: number;
+  data: formdata;
+  setData: (value: formdata) => void;
 }
 
 type option = {
@@ -41,13 +41,7 @@ export const options: option[] = [
   { value: "search_by_value", label: "Buscar elemento por valor", needs: { value: true, position: false } },
 ];
 
-export default function SequentialListForm({ submit, list_length }: SequentialListFormProps) {
-  const [data, setData] = React.useState<formdata>({
-    operation: "",
-    value: null,
-    position: list_length,
-  });
-
+export default function SequentialListForm({ submit, data, setData }: SequentialListFormProps) {
   /**
    *
    * @param {number[] | values between 0 and 5} index_array
@@ -73,7 +67,8 @@ export default function SequentialListForm({ submit, list_length }: SequentialLi
         value={data.operation}
         callback={(value: string) =>
           setData({
-            ...data,
+            value: null,
+            position: null,
             operation: value,
           })
         }

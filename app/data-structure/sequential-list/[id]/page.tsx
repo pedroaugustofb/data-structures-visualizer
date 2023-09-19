@@ -10,8 +10,6 @@ import { toast } from "react-toastify";
 
 const list = new Sequential_List();
 
-console.log("gerou nova lista");
-
 type needs = (typeof options)[0]["needs"];
 
 export default function SequentialList({ params, searchParams }: DynamicPageProps) {
@@ -23,6 +21,16 @@ export default function SequentialList({ params, searchParams }: DynamicPageProp
       max_size: parseInt(searchParams.maxSize as string),
     },
   };
+
+  const [data, setData] = React.useState<formdata>({
+    operation: "",
+    value: null,
+    position: null,
+  });
+
+  const [color, setColor] = React.useState<string>("red");
+
+  const { Canvas: Render } = Forms;
 
   const [, updateCanvas] = React.useState<number>(0); // hack to
   React.useEffect(() => {}, [updateCanvas]); // update the canvas
@@ -57,33 +65,34 @@ export default function SequentialList({ params, searchParams }: DynamicPageProp
     }
   };
 
+  /**
+   * @param {formdata} form the action data from the canvas form
+   */
   const execute_action = (form: formdata) => {
     try {
       const { operation, value, position } = form;
 
       switch (operation) {
-        case options[0].value: // push at end
-          list.push(value as number);
+        case "push_at_end": // push at end
+          list.push({ element: value as number });
           break;
-        case options[1].value: // push by position
-          console.log("ko");
+        case "push_at_index": // push at index
+          list.push({ element: value as number, index: position as number });
           break;
-        case options[2].value: // remove at end
-          let index = list.length() - 1;
-          console.log(index);
-          list.remove(index);
-          console.log(list.get_list());
+        case "pop_at_end": // remove at end
+          list.remove(list.length() - 1);
           break;
-        case options[3].value: // remove by position
+        case "pop_at_index": // remove by position
           list.remove(position as number);
           break;
-        case options[4].value: // search by position
+        case "search_by_position": // search by position
           list.element_by_index(position as number);
           // TODO: ADICIONAR NO HTML ANIMAÇÃO NESSE ELEMENTO
           break;
-        case options[5].value: // search by value
-          // TODO: ADICIONAR NO HTML ANIMAÇÃO NESSE ELEMENTO
-          break;
+        case "search_by_value": // search by value
+          throw "Not implemented yet.";
+        // TODO: ADICIONAR NO HTML ANIMAÇÃO NESSE ELEMENTO
+        //break;
         default:
           throw "Erro na execução da operação.";
       }
@@ -93,7 +102,6 @@ export default function SequentialList({ params, searchParams }: DynamicPageProp
   };
 
   /**
-   *
    * @param {formdata} form the action data from the canvas form
    * @param {needs} needs the needs to check
    */
@@ -118,17 +126,26 @@ export default function SequentialList({ params, searchParams }: DynamicPageProp
     }
   };
 
-  const { Canvas: Render } = Forms;
-
+  console.log(list.get_list());
   return (
     <>
-      <Render.Form.Root canvas={canvas} data={list}>
-        <Render.Form.SequetialList submit={submit} list_length={list.length()} />
+      <Render.Form.Root canvas={canvas} data={list} color={color} setColor={setColor}>
+        <Render.Form.SequetialList submit={submit} data={data} setData={setData} />
       </Render.Form.Root>
-      <Canvas.Root structure="sequential_list">
-        {list.get_list().map((_, index) => (
-          <Canvas.SequentialList.Root key={index} index={index} id="canvas-sequential-list-root">
-            <></>
+      <Canvas.Root structure="sequential_list" camera={{ fov: 30, position: [0, 5, 30] }}>
+        {list.get_list().map((value, index) => (
+          <Canvas.SequentialList.Root
+            key={index}
+            index={index}
+            id="canvas-sequential-list-root"
+            operation={data.operation}
+            value={value}
+            position={data.position as number}
+            color={color}
+            value_input={data.value as number}
+          >
+            <Canvas.SequentialList.Push_at_end />
+            <Canvas.SequentialList.Push_at_index />
           </Canvas.SequentialList.Root>
         ))}
       </Canvas.Root>

@@ -1,11 +1,14 @@
+interface IPush {
+  element: number;
+  index?: number;
+}
 export default class Sequential_List {
   constructor(private _max_size: number = 0, private _data: number[] = [], private _size: number = 0) {}
 
   /**
-   *
    * @returns {Array of numbers} all data from list
    */
-  get_list = (): number[] => this._data;
+  get_list = (): number[] => this._data.slice(0, this._size);
 
   /**
    * @returns {number} the max size of the list
@@ -62,11 +65,22 @@ export default class Sequential_List {
   /**
    * @param element @type {number} the element to be inserted
    */
-  push = (element: number): void => {
+  push = ({ element, index }: IPush): void => {
     // verify if the list is full, if so, throw an error
     if (this.full()) throw "List is full";
 
-    this._data[this._size] = element;
+    if (index === undefined) {
+      this._data[this._size] = element;
+    } else {
+      // verifica se o índice é válido
+      if (index < 0 || index > this._size) throw "Index out of bounds";
+
+      // desloca os elementos da lista para a direita até a posição index
+      for (let i = this._size; i > index; i--) this._data[i] = this._data[i - 1];
+
+      // insere o novo elemento na posição index
+      this._data[index] = element;
+    }
     this._size++;
   };
 
@@ -75,11 +89,12 @@ export default class Sequential_List {
    * @param index @type {number} the index of the element to be removed
    */
   remove = (index: number): void => {
+    if (this.empty()) throw "List is empty";
     // verify if the index param is valid
     if (index < 0 || index >= this._size) throw "Index out of bounds";
 
     // shift all elements to the left from the index param, overwriting the element to be removed
-    for (let i = index; i < this._size - 1; i++) this._data[i] = this._data[i + 1];
+    for (let i = index; i < this._size; i++) this._data[i] = this._data[i + 1];
 
     // decrement the size of the list, now that an element was removed
     this._size--;

@@ -30,7 +30,7 @@ export default function Home() {
   const router = useRouter();
 
   const data_structures_options = [
-    { value: "sequential-list", label: "Listas sequencias" },
+    { value: "sequential-list", label: "Listas sequencial" },
     { value: "linked-list", label: "Listas simplesmente encadeadas" },
     { value: "double-linked-list", label: "Listas duplamente encadeadas" },
   ];
