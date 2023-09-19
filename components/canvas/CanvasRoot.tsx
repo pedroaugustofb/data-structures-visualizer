@@ -4,7 +4,7 @@ import { Canvas } from "@react-three/fiber";
 
 type Types = "sequential_list" | "linked_list" | "double_linked_list";
 
-interface CanvasProps {
+interface CanvasProps extends React.HTMLAttributes<HTMLDivElement> {
   structure: Types;
   children: ReactNode;
   camera?: {

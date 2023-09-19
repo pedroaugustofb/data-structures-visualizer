@@ -12,6 +12,12 @@ const list = new Sequential_List();
 
 type needs = (typeof options)[0]["needs"];
 
+const initial_state = {
+  operation: "",
+  value: null,
+  position: null,
+};
+
 export default function SequentialList({ params, searchParams }: DynamicPageProps) {
   const data_structure = {
     name: searchParams.name,
@@ -22,7 +28,9 @@ export default function SequentialList({ params, searchParams }: DynamicPageProp
     },
   };
 
-  const [data, setData] = React.useState<formdata>({
+  const [data, setData] = React.useState<formdata>(initial_state);
+
+  const [aux_data, setAuxData] = React.useState<formdata>({
     operation: "",
     value: null,
     position: null,
@@ -50,6 +58,7 @@ export default function SequentialList({ params, searchParams }: DynamicPageProp
    */
   const submit = async (form: formdata) => {
     try {
+      setData(aux_data);
       // get what we have to verify
       const needs = options.find((option) => option.value === form.operation)?.needs as needs;
 
@@ -61,6 +70,7 @@ export default function SequentialList({ params, searchParams }: DynamicPageProp
       // this is an hack to force the page update
       updateCanvas((prev) => prev + 1);
     } catch (error) {
+      setData(initial_state);
       toast.error(error as string);
     }
   };
@@ -84,15 +94,14 @@ export default function SequentialList({ params, searchParams }: DynamicPageProp
           break;
         case "pop_at_index": // remove by position
           list.remove(position as number);
+          setData(initial_state);
           break;
         case "search_by_position": // search by position
           list.element_by_index(position as number);
-          // TODO: ADICIONAR NO HTML ANIMAÇÃO NESSE ELEMENTO
           break;
         case "search_by_value": // search by value
-          throw "Not implemented yet.";
-        // TODO: ADICIONAR NO HTML ANIMAÇÃO NESSE ELEMENTO
-        //break;
+          list.index_by_element(value as number);
+          break;
         default:
           throw "Erro na execução da operação.";
       }
@@ -126,11 +135,24 @@ export default function SequentialList({ params, searchParams }: DynamicPageProp
     }
   };
 
-  console.log(list.get_list());
+  const onChangeAuxData = (key: string, value: any) => {
+    if (key === "operation") {
+      setData(initial_state);
+      setAuxData({
+        ...initial_state,
+        [key]: value,
+      });
+    } else
+      setAuxData({
+        ...aux_data,
+        [key]: value,
+      });
+  };
+
   return (
     <>
-      <Render.Form.Root canvas={canvas} data={list} color={color} setColor={setColor}>
-        <Render.Form.SequetialList submit={submit} data={data} setData={setData} />
+      <Render.Form.Root canvas={canvas} color={color} setColor={setColor}>
+        <Render.Form.SequetialList submit={submit} data={aux_data} setData={onChangeAuxData} />
       </Render.Form.Root>
       <Canvas.Root structure="sequential_list" camera={{ fov: 30, position: [0, 5, 30] }}>
         {list.get_list().map((value, index) => (

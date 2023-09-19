@@ -15,7 +15,7 @@ interface SequentialListFormProps {
   // the callback function to run when button got clicked
   submit: (data: formdata) => void;
   data: formdata;
-  setData: (value: formdata) => void;
+  setData: (key: string, value: any) => void;
 }
 
 type option = {
@@ -60,66 +60,67 @@ export default function SequentialListForm({ submit, data, setData }: Sequential
   const disabled = !show_position && !show_value && data.operation !== "pop_at_end";
 
   return (
-    <div className="w-full flex gap-3">
-      <DropDown<string>
-        label="Selecione a operação desejada"
-        className="w-4/12"
-        value={data.operation}
-        callback={(value: string) =>
-          setData({
-            value: null,
-            position: null,
-            operation: value,
-          })
-        }
-        options={options}
-      />
-      <div className="grid grid-cols-2 grid-rows-1 gap-3 w-6/12">
-        <TextField
-          className={`${show_value ? "visible" : "invisible absolute"}`}
-          value={data.value !== null && data.value}
-          type="number"
-          placeholder="Valor do elemento"
-          label="Valor"
-          onChange={(e) =>
-            isNaN(parseInt(e.target.value)) === false
-              ? setData({ ...data, value: parseInt(e.target.value) })
-              : setData({ ...data, value: null })
-          }
+    <>
+      <div className="w-full flex gap-3">
+        <DropDown<string>
+          label="Selecione a operação desejada"
+          className="w-4/12"
+          value={data.operation}
+          callback={(value: string) => setData("operation", value)}
+          options={options}
         />
+        <div className="grid grid-cols-2 grid-rows-1 gap-3 w-6/12">
+          <TextField
+            className={`${show_value ? "visible" : "invisible absolute"}`}
+            value={data.value !== null && data.value}
+            type="number"
+            placeholder="Valor do elemento"
+            label="Valor"
+            onChange={(e) =>
+              isNaN(parseInt(e.target.value)) === false
+                ? setData("value", parseInt(e.target.value))
+                : setData("value", null)
+            }
+          />
 
-        <TextField
-          className={`${show_position ? "visible" : "invisible"}`}
-          value={data.position !== null && data.position}
-          type="number"
-          placeholder="Posição do elemento"
-          label="Posição"
-          InputProps={{ inputProps: { min: 0 } }}
-          onChange={(e) =>
-            isNaN(parseInt(e.target.value)) === false
-              ? setData({ ...data, position: parseInt(e.target.value) })
-              : setData({ ...data, position: null })
-          }
-        />
-      </div>
-
-      <Tooltip
-        title={disabled ? "É obrigatório selecionar uma ação e campos dependentes para enviar." : "Executar ação"}
-      >
-        <div className="flex justify-center w-3/12">
-          <Button
-            disabled={disabled}
-            className={`flex w-full hover:bg-green-400 justify-center items-center rounded ${
-              disabled ? "bg-gray-700 text-white" : "bg-green-500 text-black"
-            }`}
-            onClick={() => submit(data)}
-          >
-            <Icon className="hover:cursor-pointer flex items-center">
-              <SendIcon />
-            </Icon>
-          </Button>
+          <TextField
+            className={`${show_position ? "visible" : "invisible"}`}
+            value={data.position !== null && data.position}
+            type="number"
+            placeholder="Posição do elemento"
+            label="Posição"
+            InputProps={{ inputProps: { min: 0 } }}
+            onChange={(e) =>
+              isNaN(parseInt(e.target.value)) === false
+                ? setData("position", parseInt(e.target.value))
+                : setData("position", null)
+            }
+          />
         </div>
-      </Tooltip>
-    </div>
+
+        <Tooltip
+          title={disabled ? "É obrigatório selecionar uma ação e campos dependentes para enviar." : "Executar ação"}
+        >
+          <div className="flex justify-center w-3/12">
+            <Button
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  submit(data);
+                }
+              }}
+              disabled={disabled}
+              className={`flex w-full hover:bg-green-400 justify-center items-center rounded ${
+                disabled ? "bg-gray-700 text-white" : "bg-green-500 text-black"
+              }`}
+              onClick={() => submit(data)}
+            >
+              <Icon className="hover:cursor-pointer flex items-center">
+                <SendIcon />
+              </Icon>
+            </Button>
+          </div>
+        </Tooltip>
+      </div>
+    </>
   );
 }

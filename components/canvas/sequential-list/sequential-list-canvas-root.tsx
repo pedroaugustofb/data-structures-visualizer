@@ -25,6 +25,8 @@ export default function SequentialListCanvasRoot({
 }: SequentialListCanvasRootProps) {
   const meshRef = React.useRef<Mesh>();
 
+  console.log("[SequentialListCanvasRoot] value:", value);
+
   const BASE_X = 10;
 
   const FINAL_X = index * 2 - BASE_X;
@@ -33,13 +35,13 @@ export default function SequentialListCanvasRoot({
   let searched = ["search_by_position", "push_at_index", "pop_at_index"].includes(operation) && index === position;
 
   if (operation === "search_by_value" && value === value_input) searched = true;
-  const INITIAL_POSITION = [INITIAL_X, searched ? 1.5 : 0, 0] as THREE.Vector3Tuple;
+  const INITIAL_POSITION = [INITIAL_X, 0, 0] as THREE.Vector3Tuple;
   const FINAL_POSITION = [FINAL_X, 0, 0] as THREE.Vector3Tuple;
 
   return (
     <mesh ref={meshRef as React.MutableRefObject<Mesh | null>} position={INITIAL_POSITION}>
       <boxGeometry args={[1, 1, 1]} />
-      <meshBasicMaterial transparent color={color} opacity={searched ? 0.4 : 0.1} />
+      <meshBasicMaterial transparent color={color} opacity={searched ? 0.5 : 0.2} />
       <Text3D font={font} scale={0.15} position={[-0.35, -0.1, 0.5]}>
         <meshPhysicalMaterial color={"black"} />
         {value}
