@@ -77,7 +77,10 @@ export default function CanvasFormRoot({ children, canvas, color, setColor }: Ca
             <Divider orientation="vertical" flexItem />
             <div className="w-10 flex justify-center items-center">
               <Tooltip title={"Salvar estrutura de dados"}>
-                <Icon className={`${icon_style}`} onClick={() => toast.info("Salvar")}>
+                <Icon
+                  className={`${icon_style}`}
+                  onClick={() => toast.error("Sorry about that. This feature is not implemented yet.")}
+                >
                   <SaveIcon />
                 </Icon>
               </Tooltip>
