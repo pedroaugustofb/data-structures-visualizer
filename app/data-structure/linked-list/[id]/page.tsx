@@ -161,6 +161,7 @@ export default function LinkedList({ params, searchParams }: DynamicPageProps) {
             position={data.position as number}
             color={color}
             value_input={data.value as number}
+            prev_value={index > 0 ? (linked_list.element_by_index(index - 1) as number) : undefined}
           >
             <Canvas.SequentialList.Push_at_end />
             <Canvas.SequentialList.Push_at_index />

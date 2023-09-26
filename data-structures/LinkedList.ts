@@ -32,7 +32,7 @@ export default class Linked_List {
 
     if (index === 0) return node.value as number;
 
-    for (let i = 1; i < index; i++) {
+    for (let i = 0; i < index; i++) {
       if (node.next === null) throw "Index out of bounds";
       node = this.get_next(node);
     }
