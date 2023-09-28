@@ -42,8 +42,8 @@ export default function Home() {
     try {
       if (data_structure.type === "") throw "Selecione uma estrutura de dados";
       if (data_structure.name === "") throw "Digite um nome para a estrutura de dados";
-      if (data_structure.type === "sequential-list" && data_structure.details?.max_size === undefined)
-        throw "Digite um tamanho máximo para a lista";
+      if (data_structure.type === "sequential-list" && data_structure.details?.max_size === 0)
+        throw "Tamanho máximo da lista inválido";
 
       // Gera um id único para a estrutura de dados
       const id = uuid();
