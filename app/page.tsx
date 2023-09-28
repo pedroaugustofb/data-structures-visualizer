@@ -115,7 +115,7 @@ export default function Home() {
           {data_structure.type === "sequential-list" && (
             <Forms.Home.SequentialList data={data_structure} setData={set_data_structure} />
           )}
-          {data_structure.type !== "" && (
+          {data_structure.type !== "" && data_structure.name !== "" && (
             <button
               onClick={() =>
                 toast.promise(async () => await handleForm(), {
