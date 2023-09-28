@@ -27,13 +27,9 @@ export default function LinkedList({ params, searchParams }: DynamicPageProps) {
 
   const [data, setData] = React.useState<formdata>(initial_state);
 
-  const [aux_data, setAuxData] = React.useState<formdata>({
-    operation: "",
-    value: null,
-    position: null,
-  });
+  const [aux_data, setAuxData] = React.useState<formdata>(initial_state);
 
-  const [color, setColor] = React.useState<string>("red");
+  const [color, setColor] = React.useState<string>("blue");
 
   const [, updateCanvas] = React.useState<number>(0); // hack to
   React.useEffect(() => {}, [updateCanvas]); // update the canvas
@@ -55,10 +51,10 @@ export default function LinkedList({ params, searchParams }: DynamicPageProps) {
 
       // to verify the inputs from the form
       await verify_action(form, needs);
+
       // to execute the action
       await execute_action(form);
 
-      console.log(linked_list.get_head());
       // this is an hack to force the page update
       updateCanvas((prev) => prev + 1);
     } catch (error) {
@@ -142,17 +138,23 @@ export default function LinkedList({ params, searchParams }: DynamicPageProps) {
    * to render the canvas
    */
   const array_to_render = new Array(linked_list.length()).fill(0).map((_, i) => linked_list.element_by_index(i));
-  console.log(array_to_render);
+
+  console.log(linked_list.get_head());
 
   return (
     <>
-      <Render.Form.Root canvas={canvas} color={color} setColor={setColor}>
-        <Render.Form.SequetialList submit={submit} data={aux_data} setData={onChangeAuxData} />
+      <Render.Form.Root
+        data_structure_info={data_structure}
+        data_structure={linked_list}
+        canvas={canvas}
+        color={color}
+        setColor={setColor}
+      >
+        <Render.Form.LinkedList alert submit={submit} data={aux_data} setData={onChangeAuxData} />
       </Render.Form.Root>
-      <div id="teste" />
       <Canvas.Root structure="linked_list" camera={{ fov: 30, position: [0, 5, 30] }}>
         {array_to_render.map((_, index) => (
-          <Canvas.SequentialList.Root
+          <Canvas.LinkedList.Root
             key={index}
             index={index}
             id="canvas-linked-list-root"
@@ -161,11 +163,12 @@ export default function LinkedList({ params, searchParams }: DynamicPageProps) {
             position={data.position as number}
             color={color}
             value_input={data.value as number}
+            structure="linked-list"
             prev_value={index > 0 ? (linked_list.element_by_index(index - 1) as number) : undefined}
           >
             <Canvas.SequentialList.Push_at_end />
             <Canvas.SequentialList.Push_at_index />
-          </Canvas.SequentialList.Root>
+          </Canvas.LinkedList.Root>
         ))}
       </Canvas.Root>
     </>

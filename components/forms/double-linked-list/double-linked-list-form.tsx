@@ -11,12 +11,11 @@ export type formdata = {
   position: number | null;
 };
 
-interface SequentialListFormProps {
+interface DoubleLinkedListFormProps {
   // the callback function to run when button got clicked
   submit: (data: formdata) => void;
   data: formdata;
   setData: (key: string, value: any) => void;
-  alert?: boolean;
 }
 
 type option = {
@@ -31,18 +30,20 @@ type option = {
 // Dropdown options
 export const options: option[] = [
   { value: "push_at_end", label: "Adicionar elemento no fim", needs: { value: true, position: false } },
+  { value: "push_at_start", label: "Adicionar elemento no início", needs: { value: true, position: false } },
   {
     value: "push_at_index",
     label: "Adicionar elemento em determinada posição",
     needs: { value: true, position: true },
   },
   { value: "pop_at_end", label: "Remover elemento no fim", needs: { value: false, position: false } },
+  { value: "pop_at_start", label: "Remover elemento no início", needs: { value: false, position: false } },
   { value: "pop_at_index", label: "Remover elemento em determinada posição", needs: { value: false, position: true } },
   { value: "search_by_position", label: "Buscar elemento por posição", needs: { value: false, position: true } },
   { value: "search_by_value", label: "Buscar elemento por valor", needs: { value: true, position: false } },
 ];
 
-export default function SequentialListForm({ submit, data, setData, alert }: SequentialListFormProps) {
+export default function DoubleLinkedListForm({ submit, data, setData }: DoubleLinkedListFormProps) {
   /**
    *
    * @param {number[] | values between 0 and 5} index_array
@@ -52,23 +53,22 @@ export default function SequentialListForm({ submit, data, setData, alert }: Seq
     options.filter((_value, index) => index_array.some((element) => element === index)).map((element) => element.value);
 
   // Show value input
-  const show_value = filter_options([0, 1, 5]).includes(data.operation);
+  const show_value = filter_options([0, 1, 2, 7]).includes(data.operation);
 
   // Show position input
-  const show_position = filter_options([1, 3, 4]).includes(data.operation);
+  const show_position = filter_options([2, 5, 6]).includes(data.operation);
 
   // to disabled the button and othres styles
-  const disabled = !show_position && !show_value && data.operation !== "pop_at_end";
+  const disabled =
+    !show_position && !show_value && data.operation !== "pop_at_end" && data.operation !== "pop_at_start";
 
   return (
     <>
-      {alert && (
-        <div className="w-full flex  pb-3">
-          <Alert className="w-full" severity="info">
-            O valor do elemento influencia na coordenada Y do elemento no canvas.
-          </Alert>
-        </div>
-      )}
+      <div className="w-full flex  pb-3">
+        <Alert className="w-full" severity="info">
+          O valor do elemento influencia na coordenada Y do elemento no canvas.
+        </Alert>
+      </div>
       <div className="w-full flex gap-3">
         <DropDown<string>
           label="Selecione a operação desejada"
@@ -123,7 +123,7 @@ export default function SequentialListForm({ submit, data, setData, alert }: Seq
               onClick={() => submit(data)}
             >
               <Icon className="hover:cursor-pointer flex items-center">
-                <SendIcon className="" />
+                <SendIcon />
               </Icon>
             </button>
           </div>

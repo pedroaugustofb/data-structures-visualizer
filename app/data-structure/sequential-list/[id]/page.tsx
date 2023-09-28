@@ -151,7 +151,13 @@ export default function SequentialList({ params, searchParams }: DynamicPageProp
 
   return (
     <>
-      <Render.Form.Root canvas={canvas} color={color} setColor={setColor}>
+      <Render.Form.Root
+        data_structure_info={data_structure}
+        data_structure={list}
+        canvas={canvas}
+        color={color}
+        setColor={setColor}
+      >
         <Render.Form.SequetialList submit={submit} data={aux_data} setData={onChangeAuxData} />
       </Render.Form.Root>
       <Canvas.Root structure="sequential_list" camera={{ fov: 30, position: [0, 5, 30] }}>

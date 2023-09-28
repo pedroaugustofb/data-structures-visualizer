@@ -1,6 +1,7 @@
 "use client";
 
 import CanvasFormRoot from "./common/canvas-form-root";
+import DoubleLinkedListForm from "./double-linked-list/double-linked-list-form";
 // import LinkedListForm from "./linked-list/linked-list-form";
 // import linked_list_home from "./linked-list/linked-list-home";
 import SequentialListForm from "./sequential-list/sequential-list-form";
@@ -15,6 +16,7 @@ const Forms = {
       Root: CanvasFormRoot,
       SequetialList: SequentialListForm,
       LinkedList: SequentialListForm,
+      DoubleLinkedList: DoubleLinkedListForm,
     },
   },
 };

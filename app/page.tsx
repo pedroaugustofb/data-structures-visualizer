@@ -68,6 +68,15 @@ export default function Home() {
 
   return (
     <main className="w-screen h-screen">
+      <div className="absolute w-full bottom-0 pb-3 flex justify-end">
+        <button
+          onClick={() => toast.error("Função em desenvolvimento")}
+          // onClick={() => router.push("/load")}
+          className="hover:opacity-70 mr-3 hover:bg-gray-300 border-gray-100 p-3 ease-in-out duration-300 text-gray-600 font-bold py-2 text-sm rounded"
+        >
+          Ver estruturas salvas
+        </button>
+      </div>
       <section className="w-full h-2/5 flex bg-gray-200 justify-center items-end">
         <div className="w-1/2 h-1/2 p-2 flex flex-col justify-center items-center">
           <h1 className="text-4xl text-gray-600 font-bold">Data Structure Visualizer</h1>
@@ -117,7 +126,7 @@ export default function Home() {
               }
               className="border-gray-700 border mt-3 w-full h-1/2 bg-gray-300 hover:bg-gray-400 ease-in-out duration-300 text-gray-600 font-bold text-2xl rounded-md"
             >
-              Visualizar
+              Criar
             </button>
           )}
         </div>
