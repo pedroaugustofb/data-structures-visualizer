@@ -48,7 +48,7 @@ export default function LinkedListCanvas({
   const PREV_ITEM_Y = prev_value ? prev_value / (prev_value.toString().length * 10) : null;
 
   const PREV_ITEM_POSITION = new THREE.Vector3(
-    ...(PREV_ITEM_X ? [PREV_ITEM_X, PREV_ITEM_Y ?? undefined, 0] : [0, 0, 0])
+    ...(PREV_ITEM_X ? [PREV_ITEM_X, PREV_ITEM_Y ?? undefined, 0] : [0, 0.5, 0])
   );
 
   const FINAL_ITEM_POSITION = new THREE.Vector3(...(FINAL_POSITION as Vector3Tuple));

@@ -139,8 +139,6 @@ export default function LinkedList({ params, searchParams }: DynamicPageProps) {
    */
   const array_to_render = new Array(linked_list.length()).fill(0).map((_, i) => linked_list.element_by_index(i));
 
-  console.log(linked_list.get_head());
-
   return (
     <>
       <Render.Form.Root
