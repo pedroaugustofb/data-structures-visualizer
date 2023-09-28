@@ -42,8 +42,8 @@ export default function Home() {
     try {
       if (data_structure.type === "") throw "Selecione uma estrutura de dados";
       if (data_structure.name === "") throw "Digite um nome para a estrutura de dados";
-      if (data_structure.type === "sequential-list" && data_structure.details?.max_size === undefined)
-        throw "Digite um tamanho máximo para a lista";
+      if (data_structure.type === "sequential-list" && data_structure.details?.max_size === 0)
+        throw "Tamanho máximo da lista inválido";
 
       // Gera um id único para a estrutura de dados
       const id = uuid();
@@ -61,6 +61,8 @@ export default function Home() {
       if (type === "sequential-list") url += `&maxSize=${details?.max_size}`;
 
       await router.push(url);
+
+      toast.success("Estrutura de dados criada com sucesso!");
     } catch (error) {
       toast.error(error as string);
     }
@@ -115,15 +117,9 @@ export default function Home() {
           {data_structure.type === "sequential-list" && (
             <Forms.Home.SequentialList data={data_structure} setData={set_data_structure} />
           )}
-          {data_structure.type !== "" && (
+          {data_structure.type !== "" && data_structure.name !== "" && (
             <button
-              onClick={() =>
-                toast.promise(async () => await handleForm(), {
-                  error: "Erro ao inicar estrutura.",
-                  pending: "Carregando estrutura...",
-                  success: "Estrutura iniciado com sucesso!",
-                })
-              }
+              onClick={() => handleForm()}
               className="border-gray-700 border mt-3 w-full h-1/2 bg-gray-300 hover:bg-gray-400 ease-in-out duration-300 text-gray-600 font-bold text-2xl rounded-md"
             >
               Criar
