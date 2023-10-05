@@ -11,9 +11,9 @@ import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrow
 import { useRouter } from "next/navigation";
 import { blue, cyan, green, pink, purple, red, yellow } from "@mui/material/colors";
 import SaveDataStructureModal from "../modals/save-data-structure";
+import FormInputs, { FormInputsProps } from "./FormInputs";
 
-interface CanvasFormRootProps {
-  children: ReactElement<any, any>;
+interface CanvasFormRootProps extends FormInputsProps {
   canvas: string;
   color: string;
   setColor: (value: string) => void;
@@ -26,12 +26,15 @@ interface CanvasFormRootProps {
 }
 
 export default function CanvasFormRoot({
-  children,
   canvas,
   color,
   setColor,
   data_structure,
   data_structure_info,
+  data,
+  setData,
+  options,
+  submit,
 }: CanvasFormRootProps) {
   const [open, setOpen] = React.useState<boolean>(true);
   const [colorsOpen, setColorsOpen] = React.useState<boolean>(true);
@@ -133,7 +136,9 @@ export default function CanvasFormRoot({
           </div>
           <div className="flex p-3 pt-1">
             <Grow in={open} timeout={1000}>
-              <div className="w-full">{children}</div>
+              <div className="w-full">
+                <FormInputs submit={submit} data={data} setData={setData} options={options} />
+              </div>
             </Grow>
           </div>
         </div>

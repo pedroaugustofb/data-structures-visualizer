@@ -3,6 +3,8 @@ import LinkedListCanvas from "./linked-list/linked-list-canvas-root";
 import SequentialListAddAtEnd from "./sequential-list/sequential-list-animation-push_at_end";
 import SequentialListPushAtIndex from "./sequential-list/sequential-list-animation-push_at_index";
 import SequentialListCanvasRoot from "./sequential-list/sequential-list-canvas-root";
+import CubeStackAdd from "./stack/stack-animation-add";
+import StackCanvasRoot from "./stack/stack-canvas-root";
 
 const Canvas = {
   Root: Root,
@@ -13,6 +15,10 @@ const Canvas = {
   },
   LinkedList: {
     Root: LinkedListCanvas,
+  },
+  Stack: {
+    Root: StackCanvasRoot,
+    Add: CubeStackAdd,
   },
 };
 

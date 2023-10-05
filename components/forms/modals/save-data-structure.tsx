@@ -2,8 +2,9 @@
 
 import { Modal } from "@mui/material";
 import { stringify } from "flatted";
-import { useLocalStorage } from "../../../utils/useLocalStorage";
+import useLocalStorage from "../../../utils/useLocalStorage";
 import { toast } from "react-toastify";
+import React from "react";
 
 interface SaveDataStructureModalProps {
   data_structure: any;
@@ -25,7 +26,7 @@ export default function SaveDataStructureModal({
   open,
   onClose,
 }: SaveDataStructureModalProps) {
-  const [items, setItems] = useLocalStorage("data-structures", localStorage.getItem("data-structures") || []);
+  const [items, setItems] = useLocalStorage("data-structures", []);
 
   const saveData = () => {
     let data = stringify({

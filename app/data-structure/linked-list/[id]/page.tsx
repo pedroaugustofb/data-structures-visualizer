@@ -2,14 +2,25 @@
 
 import { DynamicPageProps } from "@/utils/interfaces";
 import Forms from "../../../../components/forms";
-import { formdata, options } from "../../../../components/forms/sequential-list/sequential-list-form";
+import { formdata, option } from "@/components/forms/common/FormInputs";
 import React from "react";
 import Linked_List from "../../../../data-structures/LinkedList";
 import Canvas from "../../../../components/canvas";
 import { toast } from "react-toastify";
 
 const linked_list = new Linked_List();
-
+const options: option[] = [
+  { value: "push_at_end", label: "Adicionar elemento no fim", needs: { value: true, position: false } },
+  {
+    value: "push_at_index",
+    label: "Adicionar elemento em determinada posição",
+    needs: { value: true, position: true },
+  },
+  { value: "pop_at_end", label: "Remover elemento no fim", needs: { value: false, position: false } },
+  { value: "pop_at_index", label: "Remover elemento em determinada posição", needs: { value: false, position: true } },
+  { value: "search_by_position", label: "Buscar elemento por posição", needs: { value: false, position: true } },
+  { value: "search_by_value", label: "Buscar elemento por valor", needs: { value: true, position: false } },
+];
 type needs = (typeof options)[0]["needs"];
 
 const initial_state = {
@@ -147,9 +158,12 @@ export default function LinkedList({ params, searchParams }: DynamicPageProps) {
         canvas={canvas}
         color={color}
         setColor={setColor}
-      >
-        <Render.Form.LinkedList alert submit={submit} data={aux_data} setData={onChangeAuxData} />
-      </Render.Form.Root>
+        submit={submit}
+        options={options}
+        data={aux_data}
+        setData={onChangeAuxData}
+      />
+
       <Canvas.Root structure="linked_list" camera={{ fov: 30, position: [0, 5, 30] }}>
         {array_to_render.map((_, index) => (
           <Canvas.LinkedList.Root

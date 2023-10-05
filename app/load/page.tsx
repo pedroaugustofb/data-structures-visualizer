@@ -5,7 +5,7 @@ import { Tooltip, Icon, Divider, Grow, Dialog } from "@mui/material";
 import ReplyIcon from "@mui/icons-material/Reply";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { useLocalStorage } from "../../utils/useLocalStorage";
+import useLocalStorage from "../../utils/useLocalStorage";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { toast } from "react-toastify";
 import { parse } from "flatted";

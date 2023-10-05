@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { OrbitControls, Environment } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 
-type Types = "sequential_list" | "linked_list" | "double_linked_list";
+type Types = "sequential_list" | "linked_list" | "double_linked_list" | "stack";
 
 interface CanvasProps extends React.HTMLAttributes<HTMLDivElement> {
   structure: Types;

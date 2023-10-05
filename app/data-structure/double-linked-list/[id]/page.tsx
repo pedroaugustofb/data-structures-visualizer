@@ -2,15 +2,28 @@
 
 import { DynamicPageProps } from "@/utils/interfaces";
 import Double_Linked_List from "../../../../data-structures/DoubleLinkedList";
-import { formdata } from "../../../../components/forms/sequential-list/sequential-list-form";
+import { formdata, option } from "../../../../components/forms/common/FormInputs";
 import React from "react";
 import Forms from "../../../../components/forms";
 import { toast } from "react-toastify";
 import Canvas from "../../../../components/canvas";
-import { options } from "../../../../components/forms/double-linked-list/double-linked-list-form";
 
 const double_linked_list = new Double_Linked_List();
 
+const options: option[] = [
+  { value: "push_at_end", label: "Adicionar elemento no fim", needs: { value: true, position: false } },
+  { value: "push_at_start", label: "Adicionar elemento no início", needs: { value: true, position: false } },
+  {
+    value: "push_at_index",
+    label: "Adicionar elemento em determinada posição",
+    needs: { value: true, position: true },
+  },
+  { value: "pop_at_end", label: "Remover elemento no fim", needs: { value: false, position: false } },
+  { value: "pop_at_start", label: "Remover elemento no início", needs: { value: false, position: false } },
+  { value: "pop_at_index", label: "Remover elemento em determinada posição", needs: { value: false, position: true } },
+  { value: "search_by_position", label: "Buscar elemento por posição", needs: { value: false, position: true } },
+  { value: "search_by_value", label: "Buscar elemento por valor", needs: { value: true, position: false } },
+];
 type needs = (typeof options)[0]["needs"];
 
 const initial_state = {
@@ -153,9 +166,11 @@ export default function DoubleLinkedList({ params, searchParams }: DynamicPagePr
         canvas={canvas}
         color={color}
         setColor={setColor}
-      >
-        <Render.Form.DoubleLinkedList submit={submit} data={aux_data} setData={onChangeAuxData} />
-      </Render.Form.Root>
+        submit={submit}
+        options={options}
+        data={aux_data}
+        setData={onChangeAuxData}
+      />
       <Canvas.Root structure="linked_list" camera={{ fov: 30, position: [0, 5, 30] }}>
         {array_to_render.map((_, index) => (
           <Canvas.LinkedList.Root
