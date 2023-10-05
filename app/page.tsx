@@ -33,6 +33,7 @@ export default function Home() {
     { value: "sequential-list", label: "Lista sequencial" },
     { value: "linked-list", label: "Lista simplesmente encadeada" },
     { value: "double-linked-list", label: "Lista duplamente encadeada" },
+    { value: "stack", label: "Pilha" },
   ];
 
   /**
@@ -69,7 +70,7 @@ export default function Home() {
   };
 
   return (
-    <main className="w-screen h-screen">
+    <main className="w-screen h-screen flex flex-col justify-center items-center">
       <div className="absolute w-full bottom-0 pb-3 flex justify-end">
         <button
           onClick={() => toast.error("Função em desenvolvimento")}
@@ -79,15 +80,40 @@ export default function Home() {
           Ver estruturas salvas
         </button>
       </div>
-      <section className="w-full h-2/5 flex bg-gray-200 justify-center items-end">
+      <section className="w-full h-2/5 t-3 flex bg-gray-200 justify-center items-end">
         <div className="w-1/2 h-1/2 p-2 flex flex-col justify-center items-center">
           <h1 className="text-4xl text-gray-600 font-bold">Data Structure Visualizer</h1>
           <h6 className="text-gray-700 text-sm font-semibold">
             Desenvolvido por <span className="text-gray-700">Pedro Foltram</span>
           </h6>
+          <div className="py-6 text-gray-700 text-sm font-semibold">
+            <div>
+              <h1 className="text-gray-600 font-bold uppercase">O Projeto</h1>
+            </div>
+            <p className="pt-3 text-justify">
+              Este projeto foi desenvolvido para a disciplina de Estrutura de Dados, do curso de Engenharia da
+              Computação da UFPB. Se consiste em uma ferramenta para visualização 3D de estruturas de dados. Para
+              utilizar a ferramenta, selecione uma estrutura de dados e clique em criar. Você será redirecionado para a
+              página de visualização da estrutura de dados. Nela você poderá adicionar, remover e buscar elementos na
+              estrutura de dados. Para salvar a estrutura de dados, clique no botão salvar, no menu superior da tela.
+              Para mais informações sobre o projeto, acesse o{" "}
+              <a
+                href="https://github.com/pedroaugustofb/data-structures-visualizer"
+                className="text-blue-500 hover:text-blue-700 hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                repositorio
+              </a>
+              {" no GitHub."}
+            </p>
+          </div>
         </div>
       </section>
-      <section className="w-full h-3/5 bg-gray-200 flex justify-center items-start">
+      <section className="w-full h-3/5 py-3 bg-gray-200 flex-col flex justify-start items-center">
+        <div className="w-1/2 px-2 pt-3">
+          <h1 className="text-sm text-gray-600 font-bold uppercase">Criar nova estrutura de dados</h1>
+        </div>
         <div className="w-1/2 h-1/3 p-2">
           <div className="flex gap-3 justify-center items-center">
             <TextField
