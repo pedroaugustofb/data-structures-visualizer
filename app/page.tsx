@@ -34,6 +34,7 @@ export default function Home() {
     { value: "linked-list", label: "Lista simplesmente encadeada" },
     { value: "double-linked-list", label: "Lista duplamente encadeada" },
     { value: "stack", label: "Pilha" },
+    { value: "queue", label: "Fila" },
   ];
 
   /**
