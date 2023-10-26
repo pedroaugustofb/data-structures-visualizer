@@ -23,6 +23,7 @@ interface CanvasFormRootProps extends FormInputsProps {
     id: string;
     type: string;
   };
+  alert?: boolean;
 }
 
 export default function CanvasFormRoot({
@@ -39,6 +40,8 @@ export default function CanvasFormRoot({
   const [open, setOpen] = React.useState<boolean>(true);
   const [colorsOpen, setColorsOpen] = React.useState<boolean>(true);
   const [openModal, setOpenModal] = React.useState<boolean>(false);
+
+  const alert = ["linked-list", "double-linked-list"].includes(data_structure_info.type);
 
   const router = useRouter();
 
@@ -137,7 +140,7 @@ export default function CanvasFormRoot({
           <div className="flex p-3 pt-1">
             <Grow in={open} timeout={1000}>
               <div className="w-full">
-                <FormInputs submit={submit} data={data} setData={setData} options={options} />
+                <FormInputs alert={alert} submit={submit} data={data} setData={setData} options={options} />
               </div>
             </Grow>
           </div>

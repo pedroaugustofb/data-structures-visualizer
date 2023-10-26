@@ -1,4 +1,5 @@
 import Root from "./CanvasRoot";
+import BinaryTreeRoot from "./binary-tree/binary-tree-root";
 import LinkedListCanvas from "./linked-list/linked-list-canvas-root";
 import SequentialListAddAtEnd from "./sequential-list/sequential-list-animation-push_at_end";
 import SequentialListPushAtIndex from "./sequential-list/sequential-list-animation-push_at_index";
@@ -19,6 +20,9 @@ const Canvas = {
   Stack: {
     Root: StackCanvasRoot,
     Add: CubeStackAdd,
+  },
+  BinaryTree: {
+    Root: BinaryTreeRoot,
   },
 };
 
