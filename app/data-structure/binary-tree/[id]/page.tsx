@@ -1,28 +1,20 @@
 "use client";
 
 import { DynamicPageProps } from "@/utils/interfaces";
-import Double_Linked_List from "../../../../data-structures/DoubleLinkedList";
+
 import { formdata, option } from "../../../../components/forms/common/FormInputs";
 import React from "react";
 import Forms from "../../../../components/forms";
 import { toast } from "react-toastify";
 import Canvas from "../../../../components/canvas";
+import BinaryTree, { TreeNode } from "../../../../data-structures/BinaryTree";
 
-const double_linked_list = new Double_Linked_List();
+const binary_tree = new BinaryTree();
 
 const options: option[] = [
-  { value: "push_at_end", label: "Adicionar elemento no fim", needs: { value: true, position: false } },
-  { value: "push_at_start", label: "Adicionar elemento no início", needs: { value: true, position: false } },
-  {
-    value: "push_at_index",
-    label: "Adicionar elemento em determinada posição",
-    needs: { value: true, position: true },
-  },
-  { value: "pop_at_end", label: "Remover elemento no fim", needs: { value: false, position: false } },
-  { value: "pop_at_start", label: "Remover elemento no início", needs: { value: false, position: false } },
-  { value: "pop_at_index", label: "Remover elemento em determinada posição", needs: { value: false, position: true } },
-  { value: "search_by_position", label: "Buscar elemento por posição", needs: { value: false, position: true } },
-  { value: "search_by_value", label: "Buscar elemento por valor", needs: { value: true, position: false } },
+  { value: "push", label: "Adicionar elemento", needs: { value: true, position: false } },
+  { value: "remove", label: "Remover elemento", needs: { value: true, position: false } },
+  { value: "search", label: "Pesquisar elemento", needs: { value: true, position: false } },
 ];
 type needs = (typeof options)[0]["needs"];
 
@@ -86,30 +78,15 @@ export default function DoubleLinkedList({ params, searchParams }: DynamicPagePr
       const { operation, value, position } = form;
 
       switch (operation) {
-        case "push_at_end":
-          double_linked_list.add_at_end(value as number);
+        case "push":
+          binary_tree.insert(value as number);
           break;
-        case "push_at_start":
-          double_linked_list.add_at_start(value as number);
+        case "remove":
+          binary_tree.remove(value as number);
           break;
-        case "push_at_index":
-          double_linked_list.add_at_index(value as number, position as number);
-          break;
-        case "pop_at_end":
-          double_linked_list.remove_at_end();
-          break;
-        case "pop_at_start":
-          double_linked_list.remove_at_start();
-          break;
-        case "pop_at_index":
-          double_linked_list.remove_at_index(position as number);
-          setData(initial_state);
-          break;
-        case "search_by_position":
-          double_linked_list.element_by_index(position as number);
-          break;
-        case "search_by_value":
-          double_linked_list.index_by_element(value as number);
+        case "search":
+          const founded = binary_tree.search(value as number);
+          if (!founded) toast.error("Elemento não encontrado.");
           break;
         default:
           throw "Operação inválida";
@@ -151,18 +128,11 @@ export default function DoubleLinkedList({ params, searchParams }: DynamicPagePr
       });
   };
 
-  /**
-   * to render the canvas
-   */
-  const array_to_render = new Array(double_linked_list.length())
-    .fill(0)
-    .map((_, i) => double_linked_list.element_by_index(i));
-
   return (
     <>
       <Render.Form.Root
         data_structure_info={data_structure}
-        data_structure={double_linked_list}
+        data_structure={binary_tree}
         canvas={canvas}
         color={color}
         setColor={setColor}
@@ -171,24 +141,18 @@ export default function DoubleLinkedList({ params, searchParams }: DynamicPagePr
         data={aux_data}
         setData={onChangeAuxData}
       />
-      <Canvas.Root structure="linked_list" camera={{ fov: 30, position: [0, 5, 30] }}>
-        {array_to_render.map((_, index) => (
-          <Canvas.LinkedList.Root
-            structure="double_linked_list"
-            key={index}
-            index={index}
-            id="canvas-linked-list-root"
-            operation={data.operation}
-            value={double_linked_list.element_by_index(index) as number}
-            position={data.position as number}
-            color={color}
-            value_input={data.value as number}
-            prev_value={index > 0 ? (double_linked_list.element_by_index(index - 1) as number) : undefined}
-          >
-            <Canvas.SequentialList.Push_at_end />
-            <Canvas.SequentialList.Push_at_index />
-          </Canvas.LinkedList.Root>
-        ))}
+      <Canvas.Root structure="binary-tree" camera={{ fov: 30, position: [0, 5, 30] }}>
+        <Canvas.BinaryTree.Root
+          tree={binary_tree._root as TreeNode}
+          color={color}
+          depth={0}
+          operation={data.operation as string}
+          search={data.value as number}
+          position={[0, 0, 0]}
+          spacing={2.5}
+        >
+          <></>
+        </Canvas.BinaryTree.Root>
       </Canvas.Root>
     </>
   );

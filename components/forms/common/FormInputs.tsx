@@ -1,8 +1,7 @@
 "use client";
-
 import React from "react";
 import DropDown from "../../inputs/dropdown";
-import { Alert, Button, Icon, TextField, Tooltip } from "@mui/material";
+import { Alert, Icon, TextField, Tooltip } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 
 export type formdata = {
@@ -11,14 +10,15 @@ export type formdata = {
   position: number | null;
 };
 
-interface DoubleLinkedListFormProps {
+export interface FormInputsProps {
   // the callback function to run when button got clicked
   submit: (data: formdata) => void;
   data: formdata;
   setData: (key: string, value: any) => void;
+  options: option[];
 }
 
-type option = {
+export type option = {
   value: string;
   label: string;
   needs: {
@@ -27,40 +27,21 @@ type option = {
   };
 };
 
-// Dropdown options
-export const options: option[] = [
-  { value: "push_at_end", label: "Adicionar elemento no fim", needs: { value: true, position: false } },
-  { value: "push_at_start", label: "Adicionar elemento no início", needs: { value: true, position: false } },
-  {
-    value: "push_at_index",
-    label: "Adicionar elemento em determinada posição",
-    needs: { value: true, position: true },
-  },
-  { value: "pop_at_end", label: "Remover elemento no fim", needs: { value: false, position: false } },
-  { value: "pop_at_start", label: "Remover elemento no início", needs: { value: false, position: false } },
-  { value: "pop_at_index", label: "Remover elemento em determinada posição", needs: { value: false, position: true } },
-  { value: "search_by_position", label: "Buscar elemento por posição", needs: { value: false, position: true } },
-  { value: "search_by_value", label: "Buscar elemento por valor", needs: { value: true, position: false } },
-];
+export default function FormInputs({ submit, data, setData, options }: FormInputsProps) {
+  const option = options.find((elem) => elem.value === data.operation) as option;
 
-export default function DoubleLinkedListForm({ submit, data, setData }: DoubleLinkedListFormProps) {
-  /**
-   *
-   * @param {number[] | values between 0 and 5} index_array
-   * @returns {string[]} the values of the rows indicated in the param
-   */
-  const filter_options = (index_array: number[]) =>
-    options.filter((_value, index) => index_array.some((element) => element === index)).map((element) => element.value);
+  const show_value: boolean = option ? option.needs.value === true : false;
 
-  // Show value input
-  const show_value = filter_options([0, 1, 2, 7]).includes(data.operation);
+  const show_position: boolean = option ? option.needs.position === true : false;
 
-  // Show position input
-  const show_position = filter_options([2, 5, 6]).includes(data.operation);
+  const white_list = ["pop_at_end", "pop_at_start", "search_at_end"];
 
   // to disabled the button and othres styles
   const disabled =
-    !show_position && !show_value && data.operation !== "pop_at_end" && data.operation !== "pop_at_start";
+    !show_position &&
+    !show_value &&
+    data.operation.length > 0 && // if the operation is not empty
+    white_list.includes(data.operation) === false; // if the operation is not in the white list
 
   return (
     <>

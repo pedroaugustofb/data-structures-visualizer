@@ -4,11 +4,24 @@ import { DynamicPageProps } from "@/utils/interfaces";
 import React from "react";
 import Sequential_List from "@/data-structures/SequentialList";
 import Forms from "../../../../components/forms";
-import { formdata, options } from "../../../../components/forms/sequential-list/sequential-list-form";
 import Canvas from "../../../../components/canvas";
 import { toast } from "react-toastify";
+import { formdata, option } from "../../../../components/forms/common/FormInputs";
 
 const list = new Sequential_List();
+
+const options: option[] = [
+  { value: "push_at_end", label: "Adicionar elemento no fim", needs: { value: true, position: false } },
+  {
+    value: "push_at_index",
+    label: "Adicionar elemento em determinada posição",
+    needs: { value: true, position: true },
+  },
+  { value: "pop_at_end", label: "Remover elemento no fim", needs: { value: false, position: false } },
+  { value: "pop_at_index", label: "Remover elemento em determinada posição", needs: { value: false, position: true } },
+  { value: "search_by_position", label: "Buscar elemento por posição", needs: { value: false, position: true } },
+  { value: "search_by_value", label: "Buscar elemento por valor", needs: { value: true, position: false } },
+];
 
 type needs = (typeof options)[0]["needs"];
 
@@ -157,9 +170,11 @@ export default function SequentialList({ params, searchParams }: DynamicPageProp
         canvas={canvas}
         color={color}
         setColor={setColor}
-      >
-        <Render.Form.SequetialList submit={submit} data={aux_data} setData={onChangeAuxData} />
-      </Render.Form.Root>
+        submit={submit}
+        options={options}
+        data={aux_data}
+        setData={onChangeAuxData}
+      />
       <Canvas.Root structure="sequential_list" camera={{ fov: 30, position: [0, 5, 30] }}>
         {list.get_list().map((value, index) => (
           <Canvas.SequentialList.Root

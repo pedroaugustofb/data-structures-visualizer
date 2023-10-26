@@ -1,33 +1,35 @@
-/* Similar ao useState porém com uma diferença: persiste
- o state no localSotrage e também atualiza o mesmo sempre
-  que o valor do state for alterado! */
-
 "use client";
 
-import { useCallback, useState } from "react";
+import { useState } from "react";
 
-export const useLocalStorage = (key: any, initialValue: any) => {
+const useLocalStorage = (key: string, initialValue: any) => {
   const [state, setState] = useState(() => {
+    // Initialize the state
     try {
-      const storedValue = localStorage.getItem(key);
-
-      return storedValue ? JSON.parse(storedValue) : initialValue;
-    } catch {
-      return initialValue;
+      if (typeof window !== undefined) throw "window is undefined";
+      const value = window.localStorage.getItem(key);
+      // Check if the local storage already has any values,
+      // otherwise initialize it with the passed initialValue
+      return value ? JSON.parse(value) : initialValue;
+    } catch (error) {
+      console.log(error);
     }
   });
 
-  const setValue = useCallback(
-    (value: string) => {
-      try {
-        setState(value);
-        localStorage.setItem(key, JSON.stringify(value));
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    [key]
-  );
+  const setValue = (value: any) => {
+    try {
+      // If the passed value is a callback function,
+      //  then call it with the existing state.
+      if (typeof window !== undefined) throw "window is undefined";
+      const valueToStore = value instanceof Function ? value(state) : value;
+      window.localStorage.setItem(key, JSON.stringify(valueToStore));
+      setState(value);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return [state, setValue];
 };
+
+export default useLocalStorage;
