@@ -16,6 +16,7 @@ export interface FormInputsProps {
   data: formdata;
   setData: (key: string, value: any) => void;
   options: option[];
+  alert: boolean;
 }
 
 export type option = {
@@ -27,7 +28,7 @@ export type option = {
   };
 };
 
-export default function FormInputs({ submit, data, setData, options }: FormInputsProps) {
+export default function FormInputs({ submit, data, setData, options, alert }: FormInputsProps) {
   const option = options.find((elem) => elem.value === data.operation) as option;
 
   const show_value: boolean = option ? option.needs.value === true : false;
@@ -45,11 +46,13 @@ export default function FormInputs({ submit, data, setData, options }: FormInput
 
   return (
     <>
-      <div className="w-full flex  pb-3">
-        <Alert className="w-full" severity="info">
-          O valor do elemento influencia na coordenada Y do elemento no canvas.
-        </Alert>
-      </div>
+      {alert && (
+        <div className="w-full flex  pb-3">
+          <Alert className="w-full" severity="info">
+            O valor do elemento influencia na coordenada Y do elemento no canvas.
+          </Alert>
+        </div>
+      )}
       <div className="w-full flex gap-3">
         <DropDown<string>
           label="Selecione a operação desejada"

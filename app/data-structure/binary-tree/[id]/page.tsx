@@ -28,7 +28,7 @@ export default function DoubleLinkedList({ params, searchParams }: DynamicPagePr
   const data_structure = {
     name: searchParams.name,
     id: params.id,
-    type: "double-linked-list",
+    type: "binary-tree",
   };
 
   const [data, setData] = React.useState<formdata>(initial_state);
@@ -75,14 +75,16 @@ export default function DoubleLinkedList({ params, searchParams }: DynamicPagePr
    */
   const execute_action = (form: formdata) => {
     try {
-      const { operation, value, position } = form;
+      const { operation, value } = form;
 
       switch (operation) {
         case "push":
           binary_tree.insert(value as number);
           break;
         case "remove":
-          binary_tree.remove(value as number);
+          const can_remove = binary_tree.search(value as number);
+          if (!can_remove) toast.error("Elemento não encontrado.");
+          else binary_tree.remove(value as number);
           break;
         case "search":
           const founded = binary_tree.search(value as number);
