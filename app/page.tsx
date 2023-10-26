@@ -35,6 +35,7 @@ export default function Home() {
     { value: "double-linked-list", label: "Lista duplamente encadeada" },
     { value: "stack", label: "Pilha" },
     { value: "queue", label: "Fila" },
+    { value: "binary-tree", label: "Árvore Binária de Pesquisa"}
   ];
 
   /**
